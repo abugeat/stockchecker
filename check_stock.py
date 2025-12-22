@@ -4,16 +4,16 @@ import requests
 
 PRODUCT_URL = os.environ["PRODUCT_URL"]  # required
 
-QUERY_STRING = os.environ.get(
-    "CANYON_QUERY_STRING",
-    "dwvar_4164_pv_rahmenfarbe=R138_P01&dwvar_4164_pv_rahmengroesse=M&pid=4164&quantity=1"
-)
+# QUERY_STRING = os.environ.get(
+#     "CANYON_QUERY_STRING",
+#     "dwvar_4164_pv_rahmenfarbe=R138_P01&dwvar_4164_pv_rahmengroesse=M&pid=4164&quantity=1"
+# )
 
-PAYLOAD = {
-    "action": "Product-Variation",
-    "queryString": QUERY_STRING,
-    "locale": "es_ES",
-}
+# PAYLOAD = {
+#     "action": "Product-Variation",
+#     "queryString": QUERY_STRING,
+#     "locale": "es_ES",
+# }
 
 PRODUCT_PAGE = os.environ["PRODUCT_PAGE"]  # required
 
@@ -22,23 +22,24 @@ NTFY_URL = f"https://ntfy.sh/{NTFY_TOPIC}"
 
 STATE_PATH = os.environ.get("STATE_PATH", ".state/last.json")
 
+PARAMS = {
+  "dwvar_4164_pv_rahmenfarbe": "R138_P01",
+  "dwvar_4164_pv_rahmengroesse": "M",
+  "pid": "4164",
+  "quantity": "1",
+}
+
 def get_availability() -> str:
-    r = requests.post(
+    r = requests.get(
         PRODUCT_URL,
-        data=PAYLOAD,
+        params=PARAMS,
         headers={
             "accept": "application/json, text/javascript, */*; q=0.01",
             "x-requested-with": "XMLHttpRequest",
-            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "user-agent": (
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/120.0.0.0 Safari/537.36"
-            ),
-            "origin": "https://www.canyon.com",
+            "user-agent": "Mozilla/5.0",
             "referer": PRODUCT_PAGE,
         },
-        timeout=30,
+        timeout=30
     )
     r.raise_for_status()
     data = r.json()
@@ -86,7 +87,14 @@ def main():
     # Notifier uniquement sur transition False -> True
     if prev is False and now is True:
         notify(
-            "Dispo détectée ! Statut: {availability}",
+            "AVAILABILITY ALERT",
+            f"Dispo détectée ! Statut: {availability}",
+            PRODUCT_PAGE,
+        )
+    else :
+        notify(
+            "Stock check",
+            f"Vérification du stock. Statut: {availability}",
             PRODUCT_PAGE,
         )
 
