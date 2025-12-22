@@ -25,12 +25,18 @@ STATE_PATH = os.environ.get("STATE_PATH", ".state/last.json")
 def get_availability() -> str:
     r = requests.post(
         PRODUCT_URL,
-        json=PAYLOAD,
+        data=PAYLOAD,
         headers={
-            "content-type": "application/json",
+            "accept": "application/json, text/javascript, */*; q=0.01",
             "x-requested-with": "XMLHttpRequest",
-            "accept-language": "es-ES,es;q=0.9",
-            "user-agent": "Mozilla/5.0",
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "user-agent": (
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/120.0.0.0 Safari/537.36"
+            ),
+            "origin": "https://www.canyon.com",
+            "referer": PRODUCT_PAGE,
         },
         timeout=30,
     )
