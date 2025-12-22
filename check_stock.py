@@ -2,29 +2,18 @@ import os
 import json
 import requests
 
-PRODUCT_URL = os.environ["PRODUCT_URL"]  # required
+PRODUCT_URL = os.environ["PRODUCT_URL"]
 
-# QUERY_STRING = os.environ.get(
-#     "CANYON_QUERY_STRING",
-#     "dwvar_4164_pv_rahmenfarbe=R138_P01&dwvar_4164_pv_rahmengroesse=M&pid=4164&quantity=1"
-# )
+PRODUCT_PAGE = os.environ["PRODUCT_PAGE"]
 
-# PAYLOAD = {
-#     "action": "Product-Variation",
-#     "queryString": QUERY_STRING,
-#     "locale": "es_ES",
-# }
-
-PRODUCT_PAGE = os.environ["PRODUCT_PAGE"]  # required
-
-NTFY_TOPIC = os.environ["NTFY_TOPIC"]  # required
+NTFY_TOPIC = os.environ["NTFY_TOPIC"]
 NTFY_URL = f"https://ntfy.sh/{NTFY_TOPIC}"
 
 STATE_PATH = os.environ.get("STATE_PATH", ".state/last.json")
 
 PARAMS = {
   "dwvar_4164_pv_rahmenfarbe": "R138_P01",
-  "dwvar_4164_pv_rahmengroesse": "M",
+  "dwvar_4164_pv_rahmengroesse": "2XL",
   "pid": "4164",
   "quantity": "1",
 }
@@ -91,12 +80,12 @@ def main():
             f"Dispo détectée ! Statut: {availability}",
             PRODUCT_PAGE,
         )
-    else :
-        notify(
-            "Stock check",
-            f"Vérification du stock. Statut: {availability}",
-            PRODUCT_PAGE,
-        )
+    # else :
+    #     notify(
+    #         "Stock check",
+    #         f"Vérification du stock. Statut: {availability}",
+    #         PRODUCT_PAGE,
+    #     )
 
     save_last(now, availability)
 

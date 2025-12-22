@@ -1,4 +1,4 @@
-name: Canyon stock watcher
+name: Stock watcher
 
 on:
   schedule:
