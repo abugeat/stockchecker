@@ -13,7 +13,7 @@ STATE_PATH = os.environ.get("STATE_PATH", ".state/last.json")
 
 PARAMS = {
   "dwvar_4164_pv_rahmenfarbe": "R138_P01",
-  "dwvar_4164_pv_rahmengroesse": "2XL",
+  "dwvar_4164_pv_rahmengroesse": "M",
   "pid": "4164",
   "quantity": "1",
 }
