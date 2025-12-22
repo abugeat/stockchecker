@@ -32,9 +32,8 @@ jobs:
       - name: Run checker
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-          # Optionnel si tu veux changer taille/couleur sans toucher au code :
-          # CANYON_QUERY_STRING: "dwvar_4164_pv_rahmenfarbe=R138_P01&dwvar_4164_pv_rahmengroesse=M&pid=4164&quantity=1"
-          PRODUCT_PAGE: "https://www.canyon.com/es-es/bicicletas-de-carretera/gran-fondo/endurace/allroad/endurace-allroad/endurace-allroad/4164.html"
+          PRODUCT_PAGE: ${{ secrets.PRODUCT_PAGE }}
+          PRODUCT_URL: ${{ secrets.PRODUCT_URL }}
         run: python check_stock.py
 
       - name: Save state cache
