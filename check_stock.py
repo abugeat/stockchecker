@@ -35,6 +35,7 @@ def get_availability() -> str:
     view_item = next((x for x in data.get("gtmModel", []) if x.get("event") == "view_item"), None)
     if not view_item:
         return "unknown"
+    print(view_item["ecommerce"]["items"])
     return view_item["ecommerce"]["items"][0].get("item_availability", "unknown")
 
 def is_in_stock(availability: str) -> bool:
