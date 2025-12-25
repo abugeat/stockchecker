@@ -24,6 +24,14 @@ jobs:
           path: .state
           key: stock-state-v1
 
+      - name: Debug state cache
+        run: |
+          echo "Listing .state directory:"
+          ls -la .state || echo "No .state directory"
+
+          echo "Content of last.json:"
+          cat .state/last.json || echo "No last.json file"
+      
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
