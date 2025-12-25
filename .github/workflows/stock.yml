@@ -23,14 +23,8 @@ jobs:
         with:
           path: .state
           key: stock-state-v1
-
-      - name: Debug state cache
-        run: |
-          echo "Listing .state directory:"
-          ls -la .state || echo "No .state directory"
-
-          echo "Content of last.json:"
-          cat .state/last.json || echo "No last.json file"
+          restore-keys: |
+            stock-state-
       
       - name: Install deps
         run: |
@@ -39,13 +33,13 @@ jobs:
 
       - name: Run checker
         env:
-          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-          PRODUCT_PAGE: ${{ secrets.PRODUCT_PAGE }}
           PRODUCT_URL: ${{ secrets.PRODUCT_URL }}
+          PRODUCT_PAGE: ${{ secrets.PRODUCT_PAGE }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python check_stock.py
-
+      
       - name: Save state cache
-        uses: actions/cache@v4
+        uses: actions/cache/save@v4
         with:
           path: .state
-          key: stock-state-v1
+          key: stock-state-${{ github.run_id }}
