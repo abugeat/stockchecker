@@ -2,7 +2,7 @@ name: Stock watcher
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # toutes les 10 minutes (recommandé)
+    - cron: "*/10 * * * *"   # toutes les 10 minutes
   workflow_dispatch: {}
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
           PRODUCT_URL: ${{ secrets.PRODUCT_URL }}
           PRODUCT_PAGE: ${{ secrets.PRODUCT_PAGE }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: python check_stock.py
+        run: python check_stock2.py
       
       - name: Save state cache
         uses: actions/cache/save@v4
