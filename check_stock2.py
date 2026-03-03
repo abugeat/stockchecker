@@ -31,8 +31,8 @@ def extract_swatches_jsonconfig(html: str) -> dict:
       "Magento_Swatches/js/swatch-renderer": { "jsonConfig": {...}, ... }
     We parse ONLY the jsonConfig sub-object (pure JSON).
     """
-    # Find the start of `"jsonConfig": {`
-    m = re.search(r'"jsonConfig"\s*:\s*{', html)
+    # Find the start of `"jsonConfig": {` — try both double and single quotes
+    m = re.search(r'(?:"jsonConfig"|\'jsonConfig\')\s*:\s*\{', html)
     if not m:
         raise ValueError("Could not find jsonConfig in HTML")
 
@@ -153,7 +153,12 @@ def notify(title: str, message: str, click_url: str):
 
 def main():
     html = fetch_product_html()
-    cfg = extract_swatches_jsonconfig(html)
+    try:
+        cfg = extract_swatches_jsonconfig(html)
+    except ValueError as exc:
+        print(f"WARNING: Could not parse product page — {exc}")
+        print("The product page structure may have changed. Stock status unknown.")
+        return
 
     now, availability = get_size_status_from_jsonconfig(cfg, SIZE_TO_CHECK)
 
